@@ -1,17 +1,17 @@
 export default function Validation(input) {
   const errors = {};
-  const regExEmail = /\S+@\S+\.\S+/;
+  const regExUsername = /\S+@\S+\.\S+/;
   const regExPass = new RegExp("[0-9]");
-  const userInput = input.email;
+  const userInput = input.username;
   const passInput = input.password;
-  if (!regExEmail.test(userInput)) {
-    errors.email = "Ingresar un email válido";
+  if (!regExUsername.test(userInput)) {
+    errors.username = "Ingresar un email válido";
   }
   if (!userInput) {
-    errors.email = "Por favor ingresar un email";
+    errors.username = "Por favor ingresar un email";
   }
   if (userInput.length > 35) {
-    errors.email = "El email no puede tener mas de 35 carácteres";
+    errors.username = "El email no puede tener mas de 35 carácteres";
   }
   if (!regExPass.test(passInput))
     errors.password = "La contraseña debe tener al menos 1 número";

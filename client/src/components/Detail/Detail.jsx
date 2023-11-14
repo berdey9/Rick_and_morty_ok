@@ -2,7 +2,7 @@ import axios from "axios";
 import styles from "../Detail/Detail.module.css";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-export default function Detail(props) {
+export default function Detail() {
   const { detailId } = useParams();
   const [character, setCharacter] = useState({});
   useEffect(() => {

@@ -10,33 +10,44 @@ import Form from "./components/Form/Form";
 import Favorites from "./components/Favorites/Favorites";
 
 function App() {
+  const [characters, setCharacters] = useState([]);
+  const [userData, setUserData] = useState({
+    username: "",
+    password: "",
+  }); //Vamos llenando el arreglo a medida que traigamos los personajes
   const onClose = (id) => {
     setCharacters(characters.filter((char) => char.id !== id)); //Se filtran los characters diferentes al del id a cerrar
   };
-  const [characters, setCharacters] = useState([]); //Vamos llenando el arreglo a medida que traigamos los personajes
   const navigate = useNavigate();
+  const location = useLocation();
   const [access, setAccess] = useState(false);
-
-  async function login(userData) {
-    try {
-      const { email, password } = userData;
-      const URL = "http://localhost:3001/rickandmorty/login/";
-      const { data } = await axios(
-        URL + `?email=${email}&password=${password}`
-      );
-      const { access } = data;
-      setAccess(data);
-      access && navigate("/home");
-    } catch (error) {
-      return { error: error.message };
+  const username = "gonzalohb10@hotmail.com";
+  const password = "gonzalo11";
+  function login(userData) {
+    if (userData.password === password && userData.username === username) {
+      setAccess(true);
+      navigate("/home");
     }
   }
-
   useEffect(() => {
     !access && navigate("/");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [access]);
-  const location = useLocation();
+
+  // async function login(userData) {
+  //   try {
+  //     const { email, password } = userData;
+  //     const URL = "http://localhost:3001/rickandmorty/login/";
+  //     const { data } = await axios(
+  //       URL + `?email=${email}&password=${password}`
+  //     );
+  //     const { access } = data;
+  //     setAccess(data);
+  //     access && navigate("/home");
+  //   } catch (error) {
+  //     return { error: error.message };
+  //   }
+  // }
 
   async function onSearch(id) {
     try {
@@ -54,7 +65,7 @@ function App() {
     <div className="App">
       {location.pathname !== "/" ? <Nav onSearch={onSearch} /> : null} ;
       <Routes>
-        <Route path="/" element={<Form login={login} />}></Route>
+        <Route exact path="/" element={<Form login={login} />}></Route>
         <Route
           path="/home"
           element={<Cards onClose={onClose} characters={characters} />}

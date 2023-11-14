@@ -1,42 +1,45 @@
 import { ADD_FAV, REMOVE_FAV, ORDER, FILTER } from "./actions";
 const initialState = {
   myFavorites: [],
-  allCharacters: [],
+  allCharactersFav: [],
 };
-// HACEMOS 2 ARREGLOS YA QUE ALLCHARACTERS SIRVE PARA ORDENAR O HACER LAS FUNCIONES NECESARIAS PARA LUEGO HACER LA COPIA Y LO MUESTRE MYFAVORITES
 const rootReducer = (state = initialState, action) => {
-  let copyFavorites = state.myFavorites;
-  let copyCharacters = state.allCharacters;
   switch (action.type) {
     case ADD_FAV:
       return {
         ...state,
-        myFavorites: action.payload,
-        allCharacters: action.payload,
+        myFavorites: [...state.allCharactersFav, action.payload],
+        allCharactersFav: [...state.allCharactersFav, action.payload],
       };
     case REMOVE_FAV: {
-      return { ...state, myFavorites: action.payload };
+      return {
+        ...state,
+        myFavorites: state.myFavorites.filter((fav) => {
+          // eslint-disable-next-line eqeqeq
+          return fav.id != action.payload;
+        }),
+      };
     }
     case FILTER:
-      const allCharactersFiltered = copyCharacters.filter(
+      const allCharactersFiltered = state.allCharactersFav.filter(
         (character) => character.gender === action.payload
       );
       return {
         ...state,
         myFavorites:
-          action.payload === "allCharacters"
-            ? [...state.allCharacters]
+          action.payload === "All"
+            ? [...state.allCharactersFav]
             : allCharactersFiltered,
       };
     case ORDER:
-      const allCharactersSort = [...state.allCharacters];
+      const allCharactersSort = [...state.allCharactersFav];
       return {
         ...state,
         myFavorites:
           action.payload === "A"
             ? allCharactersSort.sort((a, b) => a.id - b.id)
             : allCharactersSort.sort((a, b) => b.id - a.id),
-        // el < y el - es lo mismo
+        // < y - es lo mismo
       };
     default:
       return { ...state };

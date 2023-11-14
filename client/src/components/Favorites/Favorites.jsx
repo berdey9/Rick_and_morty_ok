@@ -1,14 +1,13 @@
-import { useSelector } from "react-redux/es/hooks/useSelector";
-import { useDispatch } from "react-redux";
 import Card from "../Card/Card";
-import { filterCards, orderCards } from "../../Redux/actions";
 import { useState } from "react";
+import { filterCards, orderCards } from "../../Redux/actions";
+import { connect, useDispatch, useSelector } from "react-redux";
 const Favorites = () => {
+  const { myFavorites } = useSelector((state) => state);
   const [aux, setAux] = useState(false);
-  const favorites = useSelector((state) => state.myFavorites);
   const dispatch = useDispatch();
   const handleOrder = (event) => {
-    dispatch(orderCards(event.target.value)); //ojo aca
+    dispatch(orderCards(event.target.value));
     setAux(true);
   };
   const handleFilter = (event) => {
@@ -25,9 +24,9 @@ const Favorites = () => {
         <option value="Female">Female</option>
         <option value="Genderless">Genderless</option>
         <option value="unknown">Unknown</option>
-        <option value="allCharacters">Todos</option>
+        <option value="All">All</option>
       </select>
-      {favorites.map(({ id, name, species, gender, image }) => {
+      {myFavorites?.map(({ id, name, species, gender, image, onClose }) => {
         return (
           <Card
             key={id}
@@ -36,10 +35,12 @@ const Favorites = () => {
             species={species}
             gender={gender}
             image={image}
+            onClose={onClose}
           />
         );
       })}
     </>
   );
 };
+
 export default Favorites;

@@ -1,8 +1,9 @@
 import Card from "../Card/Card";
+import styles from "../Cards/cards.module.css";
 export default function Cards(props) {
   const { characters } = props;
   return (
-    <div>
+    <div className={styles.container}>
       {characters.map((character) => (
         <Card
           onClose={() => props.onClose(character.id)}
